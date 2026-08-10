@@ -1,0 +1,39 @@
+This is inspired from https://github.com/matey-jack/keyboard-layer3
+
+But with some of the AltGr mappings taking from https://github.com/matey-jack/qmk_userspace_iris_cozy_keymap
+
+
+modifiers:
+* CAPS as Shift
+* Shift+Shift as CAPS
+* <> as AltGr
+
+changed Shift layer:
+ * Shift+3 = @, replacing §.
+
+AltGr (and AltGr+Shift) layers left:
+
+^  ¡ §  €¢  ‰
+      UP
+ |< LF DN RT >|    
+
+
+AltGr layer right:
+
+
+^  |  [  ]  }  \¿  `
+    \  {  }  ~
+ `  /  (  )  ;
+  ×  =µ <  >  –
+  
+Notes:
+
+ * characters ` and ^ are "live" keys used for programming characters, since the original DE keymap has them as dead keys on the base and Shift layers. We leave them there and add duplicates on the AltGr layer in the same positions as the Iris keymap linked to above. 
+
+ * characters & and | don't fall on the Shift and AltGr layer of the same key here (as they do on the Iris), because the DE keymap has & further to the left and I don't change that here. 
+
+ * Only four rarely used characters are on the AltGr+Shift layer. The pair ¿¡ is already mapped there in the xkb DE standard, otherwise I would move them to plain AltGr. 
+ 
+ * I'll probably make some tweaks to the plan as I have a further look on the standard xbk DE to minimize changes and preserve some of its useful mappings.
+
+
