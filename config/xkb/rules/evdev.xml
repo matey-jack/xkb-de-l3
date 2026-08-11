@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xkbConfigRegistry SYSTEM "xkb.dtd">
+<!--
+  Registration file for GNOME's UI.  It is read by libxkbregistry, which merges
+  ~/.config/xkb/rules/evdev.xml with /etc/xkb/ and /usr/share/X11/xkb/ instead of
+  replacing them, so only the additions belong here.  Nothing in this file
+  affects how a keymap compiles; it only decides what the Settings dialog and the
+  Super+Space switcher offer and what they call it.
+
+  Check what the registry actually sees with:   ./test.sh
+  A newly added name shows up in the UI after the next login.
+-->
+<xkbConfigRegistry version="1.1">
+
+  <layoutList>
+    <layout>
+      <configItem>
+        <name>decoding</name>
+        <shortDescription>dec</shortDescription>
+        <description>German (coding)</description>
+        <languageList>
+          <iso639Id>deu</iso639Id>
+        </languageList>
+      </configItem>
+      <variantList/>
+    </layout>
+  </layoutList>
+
+  <optionList>
+    <group allowMultipleSelection="true">
+      <configItem>
+        <name>custom</name>
+        <description>Miscellaneous options</description>
+      </configItem>
+      <option>
+        <configItem>
+          <name>custom:caps_shift</name>
+          <description>Caps Lock is a third Shift; two Shift keys toggle Caps Lock</description>
+        </configItem>
+      </option>
+    </group>
+  </optionList>
+
+</xkbConfigRegistry>

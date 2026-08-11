@@ -1,0 +1,72 @@
+// German keymap with a reworked third (AltGr) layer for programming.
+//
+// Selected as gsettings input source ('xkb', 'decoding'); the stock rule
+//     *  *  =  pc+%l%(v)
+// in /usr/share/X11/xkb/rules/evdev maps the keymap name to this file, so no
+// entry in rules/evdev is needed.  rules/evdev.xml is what makes GNOME list it.
+//
+// Everything not mentioned here comes from the stock German keymap, so upstream
+// fixes to symbols/de keep flowing through.  See ../../../plan.txt for the
+// design and ../../../ReadMe.md for installation.
+
+default partial alphanumeric_keys
+xkb_symbols "basic" {
+
+    include "de(basic)"
+    name[Group1]= "German (coding)";
+
+    // ---- <> becomes a second AltGr ------------------------------------
+    // Deliberately no modifier_map: a modifier map is global across groups,
+    // whereas key symbols are per group.  Leaving it out keeps <> a normal
+    // backslash/bar key in the other keymaps of the same keyboard.  The key
+    // still works as AltGr, because the compat interpret
+    //     interpret ISO_Level3_Shift+AnyOfOrNone(all) { SetMods(LevelThree) }
+    // matches on the keysym alone, and LevelThree is already bound to Mod5.
+    key <LSGT> { type[Group1]= "ONE_LEVEL", [ ISO_Level3_Shift ] };
+
+    // ---- number row, left half ----------------------------------------
+    // AE01 is left alone: ¹ ¡ are already where the plan wants them.
+    key <TLDE> {[ dead_circumflex,     degree,      asciicircum,           U2033 ]}; // ^ ° ^ ″
+    key <AE02> {[               2,   quotedbl,          section,       oneeighth ]}; // 2 " §    (was ²)
+    key <AE03> {[               3,         at,         EuroSign,            cent ]}; // 3 @ € ¢  (was § ³ £)
+    key <AE04> {[               4,     dollar,            U2030,        currency ]}; // 4 $ ‰    (was ¼)
+
+    // ---- number row, right half ---------------------------------------
+    // AE08 [ , AE09 ] , AE10 } and AE11 \ ¿ already match the plan.
+    key <AE06> {[               6,  ampersand,      asciicircum,     fiveeighths ]}; // 6 & ^    (was ¬)
+    key <AE07> {[               7,      slash,              bar,    seveneighths ]}; // 7 / |    (was {)
+    key <AE12> {[      dead_acute, dead_grave,            grave,     dead_ogonek ]}; // ´ ` `    (was ¸)
+
+    // ---- navigation block, left hand (e / a s d f g) ------------------
+    // Level 4 repeats level 3 on purpose: with both levels equal, GTK-style
+    // consumed-modifier handling leaves Shift free, so AltGr+Shift+s still
+    // selects text.  Applications using strict XKB consumed mods will not.
+    key <AD03> {[               e,          E,               Up,              Up ]}; // (was € €)
+    key <AC01> {[               a,          A,             Home,            Home ]}; // (was æ Æ)
+    key <AC02> {[               s,          S,             Left,            Left ]}; // (was ſ ẞ)
+    key <AC03> {[               d,          D,             Down,            Down ]}; // (was ð Ð)
+    key <AC04> {[               f,          F,            Right,           Right ]}; // (was đ ª)
+    key <AC05> {[               g,          G,              End,             End ]}; // (was ŋ Ŋ)
+
+    // TODO from plan.txt: a Delete key, far enough from the arrows to avoid
+    // accidental presses.  Uncomment to try it out.
+    // key <AB05> {[           b,          B,           Delete,          Delete ]};
+
+    // ---- brackets and punctuation, right hand -------------------------
+    key <AD07> {[               u,          U,        backslash,         uparrow ]}; // (was ↓ ↑)
+    key <AD08> {[               i,          I,        braceleft,        idotless ]}; // (was →)
+    key <AD09> {[               o,          O,       braceright,          Oslash ]}; // (was ø Ø)
+    key <AD10> {[               p,          P,       asciitilde,           THORN ]}; // (was þ Þ)
+
+    key <AC07> {[               j,          J,            grave,   dead_abovedot ]}; // (was ̣  )
+    key <AC08> {[               k,          K,            slash,       ampersand ]}; // (was ĸ)
+    key <AC09> {[               l,          L,        parenleft,         Lstroke ]}; // (was ł Ł)
+    key <AC10> {[      odiaeresis, Odiaeresis,       parenright,   dead_belowdot ]}; // (was ̋ )
+    key <AC11> {[      adiaeresis, Adiaeresis,        semicolon,      dead_caron ]}; // (was ̂ )
+
+    // AB10 - _ – — already matches the plan.
+    key <AB06> {[               n,          N,         multiply,           U201D ]}; // (was ” ’)
+    key <AB07> {[               m,          M,            equal,              mu ]}; // (was µ º)
+    key <AB08> {[           comma,  semicolon,             less,        multiply ]}; // (was ·)
+    key <AB09> {[          period,      colon,          greater,        division ]}; // (was …)
+};
