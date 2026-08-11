@@ -1,0 +1,4 @@
+! option = symbols
+custom:caps_shift = +custom(caps_shift)
+
+! include %S/evdev

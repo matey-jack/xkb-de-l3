@@ -1,3 +1,27 @@
+# plan iteration
+
+Since we need a reboot for every test, we can implement the whole thing as full draft version in one go.
+
+xkb data model entities:
+ - keyboard 'model' (physical shape, number of keys and their names)
+ - 'layout' (actually: keymap): the language/culture/country definition
+ - keymap 'variant'
+ - keymap 'option'
+
+The old cozy-keyboard was implemented as a variant of German ('de') and included all changes:
+letter map, wide-hands, modifiers, and higher layers.
+
+decisions:
+ - should CAPS as SHIFT (including Shift+Shift as CAPS) be implemented as an option? - YES!
+ - should LSGT as AltGr (including AltGr mappings for <>|) be implemented as a separate option?
+ - The remaining changes affect only AltGr (incl Shift+AltGr) and the single character §.
+   They can all live in a single 'variant' - and the name is 'de-coding' ?
+
+tasks:
+- create new keymap name in symbols/de and add it to rules/{evdev,base}.{xml,lst}
+
+# specification
+
 This is inspired from https://github.com/matey-jack/keyboard-layer3
 
 But with some of the AltGr mappings taking from https://github.com/matey-jack/qmk_userspace_iris_cozy_keymap
@@ -17,6 +41,7 @@ AltGr (and AltGr+Shift) layers left:
       UP
  |< LF DN RT >|    
 
+TODO: place a delete key, maybe on AltGr+B -- distance from nav keys to avoid accidental presses.
 
 AltGr layer right:
 

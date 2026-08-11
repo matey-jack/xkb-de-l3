@@ -1,0 +1,9 @@
+// Caps Lock behaves as an additional (momentary) Shift key.
+// Any two (of now three) Shift keys pressed together activate CapsLock.
+partial modifier_keys
+xkb_symbols "caps_shift" {
+    replace key <CAPS> { [  Shift_L,  Caps_Lock  ], type[group1]="ALPHABETIC" };
+    modifier_map Shift { <CAPS> };
+    key <LFSH> {[  Shift_L,  Caps_Lock  ], type[group1]="ALPHABETIC" };
+    key <RTSH> {[  Shift_R,  Caps_Lock  ], type[group1]="ALPHABETIC" };
+};
