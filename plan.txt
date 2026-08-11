@@ -37,11 +37,13 @@ changed Shift layer:
 
 AltGr (and AltGr+Shift) layers left:
 
-^  ¡ §  €¢  ‰
+^  ¡ #¤ §£ €¢  ‰
       UP
  |< LF DN RT >|    
 
-TODO: place a delete key, maybe on AltGr+B -- distance from nav keys to avoid accidental presses.
+The nav keys are mapped to both AltGr and Shift+AltGr layers just to avoid any misunderstandings.
+The lower left row stays unchanged except for AltGr+B (and Shift+AltGr+B) acting as a delete key.
+Its distance from the nav keys is to avoid accidental presses.
 
 AltGr layer right:
 
@@ -58,7 +60,9 @@ Notes:
  * characters & and | don't fall on the Shift and AltGr layer of the same key here (as they do on the Iris), because the DE keymap has & further to the left and I don't change that here. 
 
  * Only four rarely used characters are on the AltGr+Shift layer. The pair ¿¡ is already mapped there in the xkb DE standard, otherwise I would move them to plain AltGr. 
- 
+
+ * Some keys are mapped twice, so that the old position still works in case ancient muscle memory uses it.
+
  * I'll probably make some tweaks to the plan as I have a further look on the standard xbk DE to minimize changes and preserve some of its useful mappings.
 
 
