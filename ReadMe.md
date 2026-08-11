@@ -1,5 +1,9 @@
 
-Install with `cp -r xkb ~/.config`.
+Install replacing your existing config (or when you don't have any yet):
+
+    rm -r ~/.config/xkb ; cp -r local-xkb ~/.config/xkb
+
+If you have something else there, at least the rules/ need manual merging.
 
 Enable with 
 

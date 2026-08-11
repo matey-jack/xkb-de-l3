@@ -58,7 +58,7 @@ Maybe this is new since I first modded xkb in Wayland in 2018.
 ~/.config/xkb/ can contain the full file and folder structure of /usr/share/X11/xkb/
 
 We can ignore the .xml files, because UI tools only read that from the global location.
-And we can ignore `base`, because only `evdev` is used.
+And we can ignore `base`, because only `evdev` is used on Wayland.
 
 Adding our own options allows selection using `gsettings ... xkb-options` as shown above.
 This would work for caps_shift option.
