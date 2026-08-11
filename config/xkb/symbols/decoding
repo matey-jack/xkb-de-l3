@@ -27,9 +27,10 @@ xkb_symbols "basic" {
     // ---- number row, left half ----------------------------------------
     // AE01 is left alone: ¹ ¡ are already where the plan wants them.
     key <TLDE> {[ dead_circumflex,     degree,      asciicircum,           U2033 ]}; // ^ ° ^ ″
-    key <AE02> {[               2,   quotedbl,          section,       oneeighth ]}; // 2 " §    (was ²)
-    key <AE03> {[               3,         at,         EuroSign,            cent ]}; // 3 @ € ¢  (was § ³ £)
-    key <AE04> {[               4,     dollar,            U2030,        currency ]}; // 4 $ ‰    (was ¼)
+    key <AE02> {[               2,   quotedbl,       numbersign,        currency ]}; // 2 " # ¤  (was ² ⅛)
+    key <AE03> {[               3,         at,          section,        sterling ]}; // 3 @ § £  (was § ³)
+    key <AE04> {[               4,     dollar,         EuroSign,            cent ]}; // 4 $ € ¢  (was ¼ ¤)
+    key <AE05> {[               5,    percent,            U2030,    threeeighths ]}; // 5 % ‰ ⅜  (was ½)
 
     // ---- number row, right half ---------------------------------------
     // AE08 [ , AE09 ] , AE10 } and AE11 \ ¿ already match the plan.
@@ -48,9 +49,9 @@ xkb_symbols "basic" {
     key <AC04> {[               f,          F,            Right,           Right ]}; // (was đ ª)
     key <AC05> {[               g,          G,              End,             End ]}; // (was ŋ Ŋ)
 
-    // TODO from plan.txt: a Delete key, far enough from the arrows to avoid
-    // accidental presses.  Uncomment to try it out.
-    // key <AB05> {[           b,          B,           Delete,          Delete ]};
+    // Delete, kept at arm's length from the arrows to avoid accidental presses.
+    // Rest of the lower left row is unchanged.
+    key <AB05> {[               b,          B,           Delete,          Delete ]}; // (was „ ‚)
 
     // ---- brackets and punctuation, right hand -------------------------
     key <AD07> {[               u,          U,        backslash,         uparrow ]}; // (was ↓ ↑)
