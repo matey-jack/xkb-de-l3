@@ -63,76 +63,12 @@ And we can ignore `base`, because only `evdev` is used on Wayland.
 Adding our own options allows selection using `gsettings ... xkb-options` as shown above.
 This would work for caps_shift option.
 
-But for the full third layer remapping, we should probably use a variant of the German keymap ("layout") and figure out the syntax to select such a variant. 
-
-    $ gsettings get org.gnome.desktop.input-sources sources
-    [('xkb', 'de'), ('xkb', 'us+altgr-intl')]
-
-This is how it looks in the configured sources... I can set this with `gsettings`, but if selecting the variant using Super+Space at all, the text in the UI will be wrong at make the whole thing crash... so maybe doing this as a variant is not the way, and I'll use option instead.
-
-## ~/.config/xkb/rules/evdev
-
-    ! option = symbols
-    custom:caps_shift = +custom(caps_shift)
-
-    ! include %S/evdev
-
-The last part imports the global rules which would otherwise be overwritten.
-
-
-## when mapping CAPS as Shift, we need to merge the "both Shift = CapsLock" rules
-
-Because our new Shift on the CAPS key would otherwise not have that behavior.
-
-~/.config/xkb/symbols/custom
-
-    // Caps Lock behaves as an additional (momentary) Shift key.
-    // Any two (of now three) Shift keys pressed together activate CapsLock.
-    partial modifier_keys
-    xkb_symbols "caps_shift" {
-        replace key <CAPS> { [  Shift_L,  Caps_Lock  ], type[group1]="ALPHABETIC" };
-        modifier_map Shift { <CAPS> };
-        key <LFSH> {[  Shift_L,  Caps_Lock  ], type[group1]="ALPHABETIC" };
-        key <RTSH> {[  Shift_R,  Caps_Lock  ], type[group1]="ALPHABETIC" };
-    };
 
 ## we can validate rules before activating the custom option!
 
     sudo apt install libxkbcommon-tools
     xkbcli compile-keymap --rules evdev --layout de --options custom:caps_shift | grep -A3 'key <CAPS>'
     xkbcli compile-keymap --rules evdev --layout de --options custom:caps_shift 2>&1 | less
-
-
-### FYI Claude's remapping snippet
-
-~/.config/xkb/symbols/custom
-
-    // Caps Lock behaves as an additional (momentary) Shift key.
-    partial modifier_keys
-    xkb_symbols "caps_shift" {
-        replace key <CAPS> { [ Shift_L ], type[group1] = "ONE_LEVEL" };
-        modifier_map Shift { <CAPS> };
-    };
-
-### FYI relevant content from /usr/share/X11/xkb/symbols/shift
-
-// Set CapsLock when pressed with the other Shift key, release it when pressed alone.
-partial modifier_keys
-xkb_symbols "lshift_both_capslock_cancel" {
-    key <LFSH> {[  Shift_L,  Caps_Lock  ], type[group1]="ALPHABETIC" };
-};
-
-// Set CapsLock when pressed with the other Shift key, release it when pressed alone.
-partial modifier_keys
-xkb_symbols "rshift_both_capslock_cancel" {
-    key <RTSH> {[  Shift_R,  Caps_Lock  ], type[group1]="ALPHABETIC" };
-};
-
-partial modifier_keys
-xkb_symbols "both_capslock_cancel" {
-    include "shift(lshift_both_capslock_cancel)"
-    include "shift(rshift_both_capslock_cancel)"
-};
 
 ### weirdly xkb 'variants' are listed in evdev.lst in a single namespace, yet the names are local to the file they are defined in.
 
