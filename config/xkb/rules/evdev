@@ -1,4 +1,18 @@
-! option = symbols
-custom:caps_shift = +custom(caps_shift)
-
+// The include comes FIRST here, unlike the usual advice, and that is deliberate.
+//
+// Options are merged in rules-file order and the last one to touch a key wins.
+// With our rule after the include, caps:shift_modifier beats a stale stock caps
+// option left over in gsettings; with it before, caps:none silently won and the
+// option appeared to do nothing.  Verified both ways - see ../../../ReadMe.md.
+//
+// Nothing else needs a rule: the keymap is reached by the stock
+//     *  *  =  pc+%l%(v)
+// rule, which resolves de+prog to pc+de(prog) and lands in ../symbols/de.
 ! include %S/evdev
+
+// The 'caps:' prefix is a UI grouping convention, not a file name - upstream
+// mixes them freely too (caps:none is +capslock(none), caps:internal is a types
+// rule +caps(internal)).  So the symbols may stay in our own symbols/custom,
+// which shadows no system file.
+! option = symbols
+caps:shift_modifier = +custom(shift_modifier)

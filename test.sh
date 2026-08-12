@@ -14,7 +14,7 @@ KEYMAP=${1:-de}
 KEYMAP_VARIANT=${2:-prog}
 SECOND=us
 SECOND_VARIANT=altgr-intl
-OPTIONS=custom:caps_shift
+OPTIONS=caps:shift_modifier
 
 # Keys this repo changes, plus the ones it deliberately leaves alone.
 KEYS="TLDE AE01 AE02 AE03 AE04 AE05 AE06 AE07 AE08 AE09 AE10 AE11 AE12
@@ -23,11 +23,19 @@ KEYS="TLDE AE01 AE02 AE03 AE04 AE05 AE06 AE07 AE08 AE09 AE10 AE11 AE12
       AB05 AB06 AB07 AB08 AB09 AB10 LSGT CAPS LFSH RTSH"
 
 echo "== registry (what GNOME's UI will offer) =================================="
-REGISTRY=$(xkbcli list 2>/dev/null)
+# A malformed rules/evdev.xml is not fatal: libxkbregistry skips the file and
+# GNOME just silently offers nothing.  Surface the parse errors instead.
+# (Watch for '--' inside an XML comment; that alone invalidates the file.)
+REGISTRY=$(xkbcli list 2>/tmp/$$.reg)
+if [ -s /tmp/$$.reg ]; then echo "  REGISTRY ERRORS:"; sed 's/^/    /' /tmp/$$.reg; fi
+rm -f /tmp/$$.reg
 echo "$REGISTRY" | grep -B1 -A3 "variant: '$KEYMAP_VARIANT'" | sed 's/^/  /'
-echo "$REGISTRY" | grep -A2 "name: 'custom:" | grep -v "^\s*brief:" | sed 's/^/  /'
+echo "$REGISTRY" | grep -A2 "name: '$OPTIONS'" | grep -v "^\s*brief:" | sed 's/^/  /'
 echo "  ($(echo "$REGISTRY" | grep -c "layout: '$KEYMAP'") '$KEYMAP' entries in total -" \
      "the stock variants must survive being shadowed)"
+echo "  ($(echo "$REGISTRY" | grep -c "name: '${OPTIONS%%:*}:") '${OPTIONS%%:*}:' options in total," \
+     "group allows_multiple:" \
+     "$(echo "$REGISTRY" | grep -A2 "^- name: '${OPTIONS%%:*}'" | sed -n 's/.*allows_multiple: //p'))"
 echo
 
 # Shadowing /usr/share/X11/xkb/symbols/de is what makes de+prog work, so the
@@ -41,6 +49,16 @@ if PLAIN=$(xkbcli compile-keymap --rules evdev --layout "$KEYMAP" 2>&1); then
 else
     echo "  FAILED to compile plain $KEYMAP"; echo "$PLAIN" | sed 's/^/    /'
 fi
+echo
+
+# rules/evdev puts our option after '! include %S/evdev' precisely so that it
+# wins over a stock caps option still sitting in gsettings.  Guard that too.
+echo "== $OPTIONS must beat a stale caps:none ==========================="
+for O in "$OPTIONS" "$OPTIONS,caps:none" "caps:none,$OPTIONS"; do
+    CAPS=$(xkbcli compile-keymap --rules evdev --layout "$KEYMAP" --options "$O" 2>/dev/null \
+           | awk '/key <CAPS>/{found=1} found&&/Shift_L/{print "Shift_L"; exit}')
+    printf '  %-34s -> %s\n' "$O" "${CAPS:-VoidSymbol / not a Shift  <-- WARNING}"
+done
 echo
 
 echo "== compiling $KEYMAP($KEYMAP_VARIANT),$SECOND($SECOND_VARIANT) with options=$OPTIONS ==="

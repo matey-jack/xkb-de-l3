@@ -67,8 +67,36 @@ This would work for caps_shift option.
 ## we can validate rules before activating the custom option!
 
     sudo apt install libxkbcommon-tools
-    xkbcli compile-keymap --rules evdev --layout de --options custom:caps_shift | grep -A3 'key <CAPS>'
-    xkbcli compile-keymap --rules evdev --layout de --options custom:caps_shift 2>&1 | less
+    xkbcli compile-keymap --rules evdev --layout de --options caps:shift_modifier | grep -A3 'key <CAPS>'
+    xkbcli compile-keymap --rules evdev --layout de --options caps:shift_modifier 2>&1 | less
+
+## option groups, and why ours ended up in the stock `caps` group
+
+The `foo:` prefix of an option name is nothing but a UI grouping key. It does not have to
+match the symbols file the rule points at, and upstream does not keep them matched either:
+`caps:none` is `+capslock(none)` while `caps:internal` is a *types* rule, `+caps(internal)`.
+
+libxkbregistry merges `<optionList>` the same way it merges variant lists, so declaring a
+group that already exists adds options to it instead of replacing it (verified: the `caps`
+group goes 16 -> 17 options). Declaring `<group allowMultipleSelection="false">` with just
+`<name>caps</name>` is enough; description and exclusivity come from the stock file.
+
+That matters, because the caps group is exclusive and ours genuinely belongs there — every
+`caps:` option rebinds the Caps Lock key, so they were mutually exclusive all along; as a
+`custom:` option in a multi-select group that was simply undeclared.
+
+Two things caught me out:
+
+* `caps:shift` is already taken — "Caps Lock acts as Shift *with locking*" — so the option
+  is `caps:shift_modifier`, matching the stock `caps:ctrl_modifier` naming.
+* Options merge in **rules-file order**, not in the order they appear in the gsettings
+  list. With our rule before `! include %S/evdev`, a stale `caps:none` won and our option
+  silently did nothing; after the include, ours wins. Hence the unusual include-first
+  layout of `rules/evdev`.
+
+And an XML landmine: a `--` anywhere inside an XML comment invalidates `evdev.xml`, and
+libxkbregistry then skips the file *without failing* — GNOME just silently offers nothing.
+`test.sh` now prints the parser errors.
 
 ### weirdly xkb 'variants' are listed in evdev.lst in a single namespace, yet the names are local to the file they are defined in.
 

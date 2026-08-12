@@ -9,7 +9,7 @@ text console read only `/usr/share/X11/xkb` and will ignore all of this.
 
     config/xkb/rules/evdev       maps the option name to its symbols
     config/xkb/rules/evdev.xml   registers both with GNOME's UI (libxkbregistry)
-    config/xkb/symbols/custom    the option:  custom:caps_shift
+    config/xkb/symbols/custom    the option:  caps:shift_modifier
     config/xkb/symbols/de        the keymap:  de+prog  "Deutsch (Programmierung)"
     global-xkb/symbols/de        read-only reference copy of the stock German keymap
     test.sh                      compile and inspect without touching the session
@@ -53,18 +53,26 @@ of every key this repo changes. It never touches the running session.
     ln -sfn "$PWD/config/xkb" ~/.config/xkb
 
 A symlink means editing a file in the repo is immediately live — no re-copying. If you
-already have a `~/.config/xkb`, merge by hand instead; `rules/evdev` in particular must
-keep its `! include %S/evdev` line last.
+already have a `~/.config/xkb`, merge by hand instead; in `rules/evdev` the option rule
+must stay *after* the `! include %S/evdev` line (see below).
 
 Then select the keymaps and the option:
 
     gsettings set org.gnome.desktop.input-sources sources "[('xkb','de+prog'), ('xkb','us+altgr-intl'), ('xkb','de')]"
-    gsettings set org.gnome.desktop.input-sources xkb-options "['custom:caps_shift']"
+    gsettings set org.gnome.desktop.input-sources xkb-options "['caps:shift_modifier']"
 
-Note `xkb-options` is a list that replaces the previous value, so a leftover
-`'caps:none'` from earlier experiments has to go: it maps `<CAPS>` to `VoidSymbol` and
-silently wins over `custom:caps_shift`, because options are merged in rules-file order
-and this repo's rules come before the system ones.
+`caps:shift_modifier` is registered into the stock `caps` option group, which is
+`allowMultipleSelection="false"`, so the UI now shows it as one radio button next to
+`caps:none`, `caps:escape` and the other thirteen. That is what it always was in
+practice — all of them rebind Caps Lock — it just used to be undeclared.
+
+It is *not* called `caps:shift`: upstream already uses that name for "Caps Lock acts as
+Shift **with locking**". The suffix follows the stock `caps:ctrl_modifier` instead.
+
+Because our rule sits after the include, it is merged last and wins, so a leftover
+`'caps:none'` from earlier experiments can no longer silently disable the option — the
+failure mode this repo hit before. `test.sh` checks that. Clearing the list is still
+tidier, and `xkb-options` replaces rather than appends, so the command above does it.
 
 Keeping plain `de` as a third entry is a safety net while the new keymap is still young;
 drop it once you trust it.
@@ -87,7 +95,7 @@ Editing `symbols/de` needs no logout, but mutter only recompiles when an input
 setting changes. Toggle one:
 
     gsettings set org.gnome.desktop.input-sources xkb-options "[]" && \
-    gsettings set org.gnome.desktop.input-sources xkb-options "['custom:caps_shift']"
+    gsettings set org.gnome.desktop.input-sources xkb-options "['caps:shift_modifier']"
 
 Run `./test.sh` first — a keymap that fails to compile leaves you with the previous one
 and no obvious error.

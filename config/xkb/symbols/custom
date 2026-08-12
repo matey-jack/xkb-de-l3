@@ -1,7 +1,12 @@
 // Caps Lock behaves as an additional (momentary) Shift key.
 // Any two (of now three) Shift keys pressed together activate CapsLock.
+//
+// Selected as the option caps:shift_modifier, registered into the stock 'caps'
+// group so the UI makes it exclusive with caps:none and the rest.  The section
+// name matches the option's suffix by convention only; ../rules/evdev is what
+// actually ties the two together.
 partial modifier_keys
-xkb_symbols "caps_shift" {
+xkb_symbols "shift_modifier" {
     key <CAPS> { [  Shift_L,  Caps_Lock  ], type[group1]="ALPHABETIC" };
     modifier_map Shift { <CAPS> };
     key <LFSH> {[  Shift_L,  Caps_Lock  ], type[group1]="ALPHABETIC" };

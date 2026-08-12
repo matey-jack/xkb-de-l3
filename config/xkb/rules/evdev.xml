@@ -35,16 +35,31 @@
     </layout>
   </layoutList>
 
+  <!--
+    Option groups merge the same way variant lists do, so this adds a 17th entry
+    to the stock 'caps' group rather than creating a group of its own.  That is
+    the point of putting it here: the group is allowMultipleSelection="false",
+    so the UI now renders our option as one radio button among caps:none,
+    caps:escape and the rest, which is honest: every one of them rebinds the
+    Caps Lock key, so they were always mutually exclusive in fact.
+
+    The name is 'shift_modifier' and not the obvious 'shift' because caps:shift
+    is already taken upstream: it means "Caps Lock acts as Shift *with locking*"
+    and is a types rule (+caps(shift)).  caps:shift_modifier is the exact analog
+    of the stock caps:ctrl_modifier, "Make Caps Lock an additional Ctrl".
+
+    The description and the group name here are only inherited by the UI; the
+    group's own description ("Caps Lock behavior") comes from the stock file.
+  -->
   <optionList>
-    <group allowMultipleSelection="true">
+    <group allowMultipleSelection="false">
       <configItem>
-        <name>custom</name>
-        <description>Miscellaneous options</description>
+        <name>caps</name>
       </configItem>
       <option>
         <configItem>
-          <name>custom:caps_shift</name>
-          <description>Caps Lock is a third Shift; two Shift keys toggle Caps Lock</description>
+          <name>caps:shift_modifier</name>
+          <description>Make Caps Lock an additional Shift; any two Shift keys toggle Caps Lock</description>
         </configItem>
       </option>
     </group>
