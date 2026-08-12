@@ -2,8 +2,15 @@
 
 Dieses Repo ist für Linux mit Wayland. Ein ähnliches Konzept für Windows findet sich unter [matey-jack/keyboard-layer3](https://github.com/matey-jack/keyboard-layer3).
 
-Viele deutsche Software-Entwickler benutzen das Amerikanische Tastaturlayout, weil dort die typischen Sonderzeichen für Programmierer leichter erreichbar sind:
- `{}[]\|^` und auch der Backtick \`, der z.B. hier in Markdown eine spezielle Funktion hat. Dieses Repo bietet eine bessere Lösung, da die Zeichen für Programmierer sogar eine noch bessere Position erhalten als auf der Amerikanischen Tastatur und gleichzeitig alle anderen Zeichen, insbesondere Umlaute und die beschrifteten Zeichen der Zahlenreihe erhalten bleiben! Erreicht wird das durch eine bessere Nutzung der AltGr-Ebene – und diese Ebene wird leichter erreichbar durch eine zweite AltGr-Taste für die linke Hand!
+Viele deutsche Software-Entwickler benutzen das Amerikanische Tastaturlayout, 
+weil dort die typischen Sonderzeichen für Programmierer leichter erreichbar sind:
+`{}[]\|^` und auch der Backtick \`, der z.B. hier in Markdown eine spezielle Funktion hat. 
+Dieses Repo bietet eine bessere Lösung, da die Zeichen für Programmierer sogar eine noch bessere Position erhalten als auf der Amerikanischen Tastatur und gleichzeitig alle anderen Zeichen, 
+insbesondere Umlaute und die beschrifteten Zeichen der Zahlenreihe erhalten bleiben! 
+Erreicht wird das durch eine bessere Nutzung der AltGr-Ebene – 
+und diese Ebene wird leichter erreichbar durch eine zweite AltGr-Taste für die linke Hand!
+
+Außerdem gibt es hier noch Tipps zur Umnutzung der CapsLock-Taste, die m.E. allein schon die Mühe der Einrichtung wert sind!
 
 Die Belegung im Detail:
  * Die Symbole `^` und \` werden zu Belegungen der ersten Ebene auf ihren gewöhnlichen Tasten. Wenn man sie als Akzenttaste braucht, einfach AltGr+Taste drücken!
@@ -52,8 +59,10 @@ nur, was zur Programmier-Belegung gehört (einiges davon stimmt schon mit `de(ba
 
 ## Belegung von CapsLock und andere Optionen
 
-Man kann bereits im Standard-xkb sehr viele Varianten zur Nutzung der CapsLock-Taste auswählen:
- * TODO: add screenshot from gnome-tweaks or list of options
+Man kann bereits im Standard-xkb sehr viele Varianten zur Nutzung der CapsLock-Taste auswählen.
+Eine Liste erhält man mit diesem Befehl:
+
+        xkbcli list | yq '.option_groups[] | select(.name == "caps")'
 
 Man kann das aktivieren durch die "Gnome Tweaks" GUI Anwendung, oder folgenden Befehl:
 
@@ -61,15 +70,18 @@ Man kann das aktivieren durch die "Gnome Tweaks" GUI Anwendung, oder folgenden B
 
 Nach Installation dieses Repos kommt noch eine Option hinzu, die leider im Standard fehlt:
 
-        gsettings set org.gnome.desktop.input-sources xkb-options "['custom:caps_shift']"
+        gsettings set org.gnome.desktop.input-sources xkb-options "['caps:shift_modifier']"
 
 Nach Installation und einem Neustart von Wayland wird diese auch in der Gnome Tweaks GUI angezeigt.
 
 Auch eine andere Nutzung der Taste `<>|` ist im xkb Standard schon in verschiedenen Varianten enthalten:
- * als Shift (dann wird es ähnlich dem US Layout). TODO: option name
- * als AltGr (aber leider gehen ohne das Layout aus diesem Repo die Zeichen `<>|` dann verloren)
- * weitere: TODO
+ * als Shift (dann wird es ähnlich dem US Layout) ==> `'lv2:lsgt_switch'`
+ * als AltGr (aber leider gehen ohne das Layout aus diesem Repo die Zeichen `<>|` dann verloren) ==> `'lv3:lsgt_switch'`
 
+Da unsere erweiterte Nutzung der AltGr-Ebene ohne eine zweite AltGr-Taste keinen Sinn macht, 
+habe ich letzteres fest darin eingebaut. 
+Man kann aber natürlich auch direkt die alte CapsLock-Taste als AltGr verwenden. 
+Diese Option gibt es nicht im Standard xkb, aber kann durch hacken der hiesigen Config erreicht werden. 
 
 ## Install
 
