@@ -1,4 +1,65 @@
 
+# Technical Implementation
+
+Thanks to the `~/.config/xkb` support in libxkbcommon, we can keep all the config there.
+Thus, we can install without using root permissions or changing any system files.
+And it will survive updates of the `xkeyboard-config` package.
+This only works on Wayland and that's fine.
+
+## What is here
+
+    config/xkb/rules/evdev       maps the option name to its symbols
+    config/xkb/rules/evdev.xml   registers both with GNOME's UI (libxkbregistry)
+    config/xkb/symbols/custom    the option:  caps:shift_modifier
+    config/xkb/symbols/de        the keymap:  de+prog  "Deutsch (Programmierung)"
+    global-xkb/symbols/de        read-only reference copy of the stock German keymap
+    test.sh                      compile and inspect without touching the session
+
+`config/` is laid out so it can serve directly as `XDG_CONFIG_HOME`, which is what
+`test.sh` does.
+
+## How `de+prog` finds its way here
+
+The `+` in `de+prog` is a GNOME convention, not xkb syntax: GNOME splits the input
+source on it into layout `de` and variant `prog`, then the stock rule
+
+    *  *  =  pc+%l%(v)
+
+in `/usr/share/X11/xkb/rules/evdev` expands that to `pc+de(prog)`. Since `~/.config/xkb`
+comes first in the include path and this repo has a `symbols/de`, the lookup lands on
+`config/xkb/symbols/de`. Nothing in `rules/evdev` is needed for the keymap — only the
+option needs a rule.
+
+Shadowing the system's `symbols/de` sounds risky but is not, because libxkbcommon keeps
+searching the remaining include paths when the *section* it wants is absent from the
+first file it finds. Only `prog` is defined here, so plain `de` and every stock variant
+(`neo`, `nodeadkeys`, …) still resolve to `/usr/share/X11/xkb/symbols/de`. `test.sh`
+guards that explicitly. Two rules keep it that way:
+
+* the `passthrough` section must stay marked `default`, otherwise plain `de` silently
+  picks the first section in the file and becomes the coding keymap;
+* no section here may be named `basic` — `include "de(basic)"` would then match itself
+  and libxkbcommon 1.6.0 **segfaults** rather than reporting the recursion.
+
+## Test
+
+    ./test.sh
+
+Compiles the keymap next to `us+altgr-intl`, prints what GNOME's UI will offer, checks
+that plain `de` is still the stock German keymap, and shows a table of all four levels
+of every key this repo changes. It never touches the running session.
+
+## Reload after editing
+
+Editing `symbols/de` needs no logout, but mutter only recompiles when an input
+setting changes. Toggle one:
+
+    gsettings set org.gnome.desktop.input-sources xkb-options "[]" && \
+    gsettings set org.gnome.desktop.input-sources xkb-options "['caps:shift_modifier']"
+
+Run `./test.sh` first — a keymap that fails to compile leaves you with the previous one
+and no obvious error.
+
 # how to select xkb options at runtime
 
 If your desired functionality already exists among xkb's numerous options, 

@@ -2,7 +2,7 @@
 
 Since we need a reboot for every test, we can implement the whole thing as full draft version in one go.
 
-xkb data model entities:
+xkb data model entities "MLVO":
  - keyboard 'model' (physical shape, number of keys and their names)
  - 'layout' (actually: keymap): the language/culture/country definition
  - keymap 'variant'
@@ -37,9 +37,9 @@ changed Shift layer:
 
 AltGr (and AltGr+Shift) layers left:
 
-^  ¡ #¤ §£ €¢  ‰
-      UP
- |< LF DN RT >|    
+^   ¡  #¤  §£  €¢   ‰
+             UP
+    |<   LF   DN   RT   >|
 
 The nav keys are mapped to both AltGr and Shift+AltGr layers just to avoid any misunderstandings.
 The lower left row stays unchanged except for AltGr+B (and Shift+AltGr+B) acting as a delete key.
@@ -47,11 +47,10 @@ Its distance from the nav keys is to avoid accidental presses.
 
 AltGr layer right:
 
-
-^  |  [  ]  }  \¿  `
-    \  {  }  ~
- `  /  (  )  ;
-  ×  =µ <  >  –
+ |   {   [   ]   }   \¿   `
+        \   {   }   ~
+         /   (   )   ;
+       ×   =µ  <   >   –
   
 Notes:
 
