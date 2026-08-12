@@ -1,3 +1,40 @@
+# Deutsches Tastaturlayout mit besserem Zugriff auf Sonderzeichen für Programmierer
+
+Dieses Repo ist für Linux mit Wayland. Ein ähnliches Konzept für Windows findet sich unter [matey-jack/keyboard-layer3](https://github.com/matey-jack/keyboard-layer3).
+
+Viele deutsche Software-Entwickler benutzen das Amerikanische Tastaturlayout, weil dort die typischen Sonderzeichen für Programmierer leichter erreichbar sind:
+ `{}[]\|^` und auch der Backtick \`, der z.B. hier in Markdown eine spezielle Funktion hat. Dieses Repo bietet eine bessere Lösung, da die Zeichen für Programmierer sogar eine noch bessere Position erhalten als auf der Amerikanischen Tastatur und gleichzeitig alle anderen Zeichen, insbesondere Umlaute und die beschrifteten Zeichen der Zahlenreihe erhalten bleiben! Erreicht wird das durch eine bessere Nutzung der AltGr-Ebene – und diese Ebene wird leichter erreichbar durch eine zweite AltGr-Taste für die linke Hand!
+
+Die Belegung im Detail:
+ * Die Symbole `^` und \` werden zu Belegungen der ersten Ebene auf ihren gewöhnlichen Tasten. Wenn man sie als Akzenttaste braucht, einfach AltGr+Taste drücken!
+ * Shift+3 wird zu @ und das deutsche § wandert stattdessen auf AltGr+3.
+ * `'` und `#` wechseln ihre Plätze, so dass der Apostroph bzw. 'single quote' ohne Shift erreichbar ist. `#` braucht dann wie im US Layout ein Shift. Beide bleiben aber auf derselben Taste.
+ * (Wie man sieht, liegen die meisten geänderten Zeichen immer noch auf der Taste auf der sie auch beschriftet sind!)
+ * Die Taste `<>|` wird zu AltGr.
+
+TODO: bring remainder from plan.
+
+## Belegung von CapsLock und andere Optionen
+
+Man kann bereits im Standard-xkb sehr viele Varianten zur Nutzung der CapsLock-Taste auswählen:
+ * TODO: copy
+
+Man kann das aktivieren durch die "Gnome Tweaks" GUI Anwendung, oder folgenden Befehl:
+
+        gsettings set org.gnome.desktop.input-sources xkb-options "['caps:none']"
+
+Nach Installation dieses Repos kommt noch eine Option hinzu, die leider im Standard fehlt:
+
+        gsettings set org.gnome.desktop.input-sources xkb-options "['custom:caps_shift']"
+
+Nach Installation und einem Neustart von Wayland wird diese auch in der Gnome Tweaks GUI angezeigt.
+
+Auch eine andere Nutzung der Taste `<>|` ist im xkb Standard schon in verschiedenen Varianten enthalten:
+ * als Shift (dann wird es ähnlich dem US Layout). TODO: option name
+ * als AltGr (aber leider gehen ohne das Layout aus diesem Repo die Zeichen `<>|` dann verloren)
+ * weitere: TODO
+
+# Technical Implementation
 A German keymap with a reworked AltGr layer for programming, plus a Caps-Lock-as-Shift
 option, both as a *user-local* xkb configuration — no root, no system files touched,
 and nothing that a `xkeyboard-config` package update can overwrite.
