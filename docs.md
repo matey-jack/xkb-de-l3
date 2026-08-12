@@ -18,6 +18,19 @@ This only works on Wayland and that's fine.
 `config/` is laid out so it can serve directly as `XDG_CONFIG_HOME`, which is what
 `test.sh` does.
 
+### quick reminder: xkb data model entities "MLVO"
+
+- keyboard 'model' (physical shape, number of keys and their names)
+- 'layout' (actually: keymap): the language/culture/country definition
+- keymap 'variant'
+- keymap 'option'
+
+Variants and options use the same configuration language as the layouts, stored in the `symbols` folder, 
+but options are intended to be small tweaks which work with any layout (or at least many layouts), 
+whereas variants are modifications of a specific base keymap.
+Usually variants are defined in the same file as their base, but this is just a convention, 
+since each variant needs to 'include' its base.
+
 ## How `de+prog` finds its way here
 
 The `+` in `de+prog` is a GNOME convention, not xkb syntax: GNOME splits the input
