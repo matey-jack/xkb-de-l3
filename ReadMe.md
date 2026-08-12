@@ -12,14 +12,43 @@ Die Belegung im Detail:
  * (Wie man sieht, liegen die meisten geänderten Zeichen immer noch auf der Taste auf der sie auch beschriftet sind!)
  * Die Taste `<>|` wird zu AltGr.
 
-TODO:
-- komplette Belegung der Basis und Shift-Ebene (4 Zeilen von Tasten) als ASCII Bild einfügen:
-    + 4 Zeichen pro Taste: 2 für Basis und Shift Zeichen, zwei Leerzeichen Abstand
-    + bei Tab, Ent, Bsp, AGr und Sft drei Zeichen für die Taste und ein Zeichen Abstand
-    + Datenquelle hierfür ist de(basic) plus die oben genannten Änderungen.
-- Zeilen sind versetzt (staggered) wie auf der physischen Tastatur: ein Zeichen = 1/4 Taste,
-  also 1 Zeichen Versatz zwischen der QWE und ASD Zeile und zwei Zeichen Versatz zwischen den anderen beiden Zeilen.
-- Darunter dann separat dasselbe für die AltGr und AltGr+Shift-Ebene, siehe plan.txt, aufgefüllt durch Lücken, nicht die Standard-Tasten von de(basic) kopieren.
+## Basis- und Shift-Ebene
+
+```
+^°  1!  2"  3@  4$  5%  6&  7/  8(  9)  0=  ß?  `´  Bsp
+  Tab qQ  wW  eE  rR  tT  zZ  uU  iI  oO  pP  üÜ  +*
+   Cap aA  sS  dD  fF  gG  hH  jJ  kK  lL  öÖ  äÄ  '#  Ent
+ Sft AGr yY  xX  cC  vV  bB  nN  mM  ,;  .:  -_  Sft
+```
+
+Jede Taste ist vier Spalten breit (ein Zeichen = 1/4 Taste), daher sind die Zeilen
+genauso versetzt wie auf der physischen Tastatur. Das erste Zeichen einer Taste ist
+die Basis-, das zweite die Shift-Ebene. Gegenüber `de(basic)` anders sind nur Shift+3
+(`@` statt `§`), die getauschten Paare `` `´ `` und `'#`, und die `<>|`-Taste, die
+jetzt die zweite AltGr-Taste ist (`AGr`). Dazu sind `^` und `` ` `` hier echte
+Zeichen statt Tot-Tasten.
+
+## AltGr- und AltGr+Shift-Ebene
+
+```
+^    ¡  #¤  §£  €¢  ‰   ^   |   [   ]   }   \¿  `   Bsp
+  Tab         ↑               \   {   }   ~
+   Cap ⇤   ←   ↓   →   ⇥       `   /   (   )   ;   ’   Ent
+ Sft AGr                 ⌦   ×   =µ  <   >   –   Sft
+```
+
+Gleiche Darstellung, aber erstes Zeichen = AltGr, zweites = AltGr+Shift. Gezeigt ist
+nur, was zur Programmier-Belegung gehört (einiges davon stimmt schon mit `de(basic)`
+überein); alle übrigen Positionen behalten ihre Standard-Belegung und sind hier der
+Übersicht halber leer gelassen.
+
+ * `^` auf der `^`-Taste und `` ` `` auf der `´`-Taste sind die *Akzent*-Varianten
+   (Tot-Tasten) – die "lebenden" Zeichen liegen ja jetzt auf der Basis-Ebene.
+   AltGr+6 und AltGr+j sind dagegen echte, direkt druckende `^` bzw. `` ` ``.
+ * Navigation: `⇤` Pos1, `⇥` Ende, `←` `↓` `↑` `→` Pfeile, `⌦` Entf. Diese liegen
+   absichtlich auf beiden Ebenen, damit AltGr+Shift+s auch markiert.
+ * Einige Zeichen sind doppelt belegt (`^`, `` ` ``, `\`, `}`, `/`, `=`, `()`, `;`),
+   damit auch alte Positionen aus dem US- und DE-Layout weiter funktionieren.
 
 ## Belegung von CapsLock und andere Optionen
 
