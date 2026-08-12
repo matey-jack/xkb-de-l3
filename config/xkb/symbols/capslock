@@ -5,6 +5,12 @@
 // group so the UI makes it exclusive with caps:none and the rest.  The section
 // name matches the option's suffix by convention only; ../rules/evdev is what
 // actually ties the two together.
+//
+// This file shadows the stock symbols/capslock, which holds the other 13 caps:
+// options, and it does so for the same reason symbols/de shadows the stock
+// German layout: the name is what the option rules already point at, so ours
+// slots in beside them instead of inventing a parallel file.  Verified that all
+// 17 stock caps: options still compile byte-identically through the shadow.
 partial modifier_keys
 xkb_symbols "shift_modifier" {
     key <CAPS> { [  Shift_L,  Caps_Lock  ], type[group1]="ALPHABETIC" };

@@ -10,7 +10,7 @@ This only works on Wayland and that's fine.
 
     config/xkb/rules/evdev       maps the option name to its symbols
     config/xkb/rules/evdev.xml   registers both with GNOME's UI (libxkbregistry)
-    config/xkb/symbols/custom    the option:  caps:shift_modifier
+    config/xkb/symbols/capslock  the option:  caps:shift_modifier
     config/xkb/symbols/de        the keymap:  de+prog  "Deutsch (Programmierung)"
     global-xkb/symbols/de        read-only reference copy of the stock German keymap
     test.sh                      compile and inspect without touching the session

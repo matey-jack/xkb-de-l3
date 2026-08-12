@@ -12,7 +12,17 @@
 
 // The 'caps:' prefix is a UI grouping convention, not a file name - upstream
 // mixes them freely too (caps:none is +capslock(none), caps:internal is a types
-// rule +caps(internal)).  So the symbols may stay in our own symbols/custom,
-// which shadows no system file.
+// rule +caps(internal)).  We still use capslock, the file the other 13 caps:
+// options live in, so this line has the same shape as the stock ones and the
+// grouping stays honest.
+//
+// The file was called 'custom' before.  That name is a trap: xkeyboard-config
+// registers a layout named 'custom' in its own rules/evdev.xml, so GNOME offers
+// "A user-defined custom Layout" in Settings whether or not you have such a
+// file - and if you do, picking it compiles pc+custom, i.e. the first section
+// here, into a keymap with modifiers but no letters.  The registry entry cannot
+// be removed or renamed from ~/.config/xkb (libxkbregistry merges additively:
+// new names are added, existing ones never overridden), so the fix is to not
+// answer to that name.  'capslock' is a symbols file only, never a layout.
 ! option = symbols
-caps:shift_modifier = +custom(shift_modifier)
+caps:shift_modifier = +capslock(shift_modifier)
