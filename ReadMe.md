@@ -50,11 +50,16 @@ of every key this repo changes. It never touches the running session.
 
 ## Install
 
+    rm -rf ~/.config/xkb && cp config/xkb" ~/.config/xkb
+
+If you already have any custom config there, you need to merge at least the `rules/evdev` file by hand.
+
+If you like to live on the edge, you can also symlink:
+
     ln -sfn "$PWD/config/xkb" ~/.config/xkb
 
-A symlink means editing a file in the repo is immediately live — no re-copying. If you
-already have a `~/.config/xkb`, merge by hand instead; in `rules/evdev` the option rule
-must stay *after* the `! include %S/evdev` line (see below).
+I am not doing that, because I want to run the tests (see `test.sh`) on any changes before they go live.
+(And running tests might cause a reload of config already, since they call global commands, even if only with local data.)
 
 Then select the keymaps and the option:
 
