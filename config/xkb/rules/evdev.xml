@@ -12,17 +12,26 @@
 -->
 <xkbConfigRegistry version="1.1">
 
+  <!--
+    'prog' is registered as a variant of the stock 'de' layout, not as a layout
+    of its own.  libxkbregistry merges variant lists, so de keeps all 20 of its
+    upstream variants and gains this one; shortDescription, countryList and
+    languageList are inherited from the stock de entry, which is why only name
+    and description appear here (same shape as the upstream variants).
+  -->
   <layoutList>
     <layout>
       <configItem>
-        <name>decoding</name>
-        <shortDescription>dec</shortDescription>
-        <description>German (coding)</description>
-        <languageList>
-          <iso639Id>deu</iso639Id>
-        </languageList>
+        <name>de</name>
       </configItem>
-      <variantList/>
+      <variantList>
+        <variant>
+          <configItem>
+            <name>prog</name>
+            <description>Deutsch (Programmierung)</description>
+          </configItem>
+        </variant>
+      </variantList>
     </layout>
   </layoutList>
 

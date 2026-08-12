@@ -139,3 +139,32 @@ xkb_symbols "both_capslock_cancel" {
 I haven't quite figured out how xkb actually defines a variant. 
 I will delay implementation of de(coding) or de+coding to research it a bit more.
 I would like the option of selecting it via Super+space...
+
+RESOLVED — implemented as `de+prog`. A variant is not a first-class thing at all:
+
+* `de+prog` is split by GNOME into layout=de, variant=prog. The `+` is a desktop
+  convention; xkb never sees it. `setxkbmap -layout de -variant prog` is the same input.
+* The rules file is the whole mechanism. `*  *  =  pc+%l%(v)` expands to `pc+de(prog)`,
+  i.e. "section `prog` of file `symbols/de`". So a variant is just a named
+  `xkb_symbols` section, and the single namespace in evdev.lst is only the registry's
+  flat presentation of (layout, variant) pairs — the names really are file-local.
+* Include paths are searched `~/.config/xkb`, `~/.xkb`, `/etc/xkb`, `/usr/share/X11/xkb`.
+  A local `symbols/de` shadows the system one *per section*: if the requested section is
+  missing, libxkbcommon continues to the next path. That is what lets us add `prog`
+  without losing plain `de` or the 19 upstream variants.
+* libxkbregistry merges `evdev.xml` variant lists, so registering `prog` under `de` adds
+  to the stock list rather than replacing it (verified: de goes 20 -> 21 entries).
+
+Two dead ends, both verified on libxkbcommon 1.6.0, worth not retrying:
+
+* Keeping a distinctly-named file and redirecting to it from a user rule
+  (`* de prog = pc+deprog(basic)`) works **only in layout slot 1**. For slots 2-4 the
+  `! model layout[N] = symbols` catch-all `+%l[N]%(v[N]):N` always wins, so
+  `! model layout[N] variant[N] = symbols` rules never fire. Not our bug: upstream's own
+  `ro`+`de` -> `ro(winkeys)` rule fails the same way in slot 2 on a stock system.
+* The combined `layout(variant)` match form upstream uses (`* gr(extended) = ...`) is an
+  X-server rules idiom that libxkbcommon does not implement — it fails in every slot.
+
+And one landmine: a section named `basic` doing `include "de(basic)"` inside a local
+`symbols/de` self-includes and **segfaults** libxkbcommon 1.6.0 (SIGSEGV, core dumped)
+instead of reporting recursion.

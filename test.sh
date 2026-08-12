@@ -4,13 +4,14 @@
 # ./config makes ./config/xkb the xkb user configuration root, which is the same
 # thing libxkbcommon reads from ~/.config/xkb at runtime.
 #
-# Usage:  ./test.sh [keymap]        default keymap: decoding
+# Usage:  ./test.sh [layout] [variant]      default: de prog
 set -u
 
 cd "$(dirname "$0")" || exit 1
 export XDG_CONFIG_HOME="$PWD/config"
 
-KEYMAP=${1:-decoding}
+KEYMAP=${1:-de}
+KEYMAP_VARIANT=${2:-prog}
 SECOND=us
 SECOND_VARIANT=altgr-intl
 OPTIONS=custom:caps_shift
@@ -23,13 +24,28 @@ KEYS="TLDE AE01 AE02 AE03 AE04 AE05 AE06 AE07 AE08 AE09 AE10 AE11 AE12
 
 echo "== registry (what GNOME's UI will offer) =================================="
 REGISTRY=$(xkbcli list 2>/dev/null)
-echo "$REGISTRY" | grep -A3 "^- layout: '$KEYMAP'" | sed 's/^/  /'
+echo "$REGISTRY" | grep -B1 -A3 "variant: '$KEYMAP_VARIANT'" | sed 's/^/  /'
 echo "$REGISTRY" | grep -A2 "name: 'custom:" | grep -v "^\s*brief:" | sed 's/^/  /'
+echo "  ($(echo "$REGISTRY" | grep -c "layout: '$KEYMAP'") '$KEYMAP' entries in total -" \
+     "the stock variants must survive being shadowed)"
 echo
 
-echo "== compiling $KEYMAP,$SECOND($SECOND_VARIANT) with options=$OPTIONS ======="
+# Shadowing /usr/share/X11/xkb/symbols/de is what makes de+prog work, so the
+# thing most likely to break is plain 'de'.  Guard it explicitly.
+echo "== plain $KEYMAP must still be the stock German keymap ===================="
+if PLAIN=$(xkbcli compile-keymap --rules evdev --layout "$KEYMAP" 2>&1); then
+    echo "  $(echo "$PLAIN" | grep -m1 'name\[Group1\]' | tr -d '\t')"
+    echo "$PLAIN" | grep -q 'twosuperior' \
+        && echo "  ok - AE02 still carries stock German's ² " \
+        || echo "  WARNING - plain $KEYMAP no longer looks like the stock keymap"
+else
+    echo "  FAILED to compile plain $KEYMAP"; echo "$PLAIN" | sed 's/^/    /'
+fi
+echo
+
+echo "== compiling $KEYMAP($KEYMAP_VARIANT),$SECOND($SECOND_VARIANT) with options=$OPTIONS ==="
 if ! xkbcli compile-keymap --rules evdev \
-        --layout "$KEYMAP,$SECOND" --variant ",$SECOND_VARIANT" \
+        --layout "$KEYMAP,$SECOND" --variant "$KEYMAP_VARIANT,$SECOND_VARIANT" \
         --options "$OPTIONS" > /tmp/$$.xkb 2> /tmp/$$.err; then
     echo "FAILED"; cat /tmp/$$.err; rm -f /tmp/$$.xkb /tmp/$$.err; exit 1
 fi

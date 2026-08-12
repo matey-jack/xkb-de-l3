@@ -1,19 +1,38 @@
-// German keymap with a reworked third (AltGr) layer for programming.
+// German keymap with a reworked third (AltGr) layer for programming, offered as
+// a genuine variant of the stock German layout:  de+prog.
 //
-// Selected as gsettings input source ('xkb', 'decoding'); the stock rule
+// Selected as gsettings input source ('xkb', 'de+prog').  GNOME splits that on
+// the '+' into layout=de, variant=prog -- the '+' is a desktop convention, not
+// xkb syntax -- and the stock rule
 //     *  *  =  pc+%l%(v)
-// in /usr/share/X11/xkb/rules/evdev maps the keymap name to this file, so no
-// entry in rules/evdev is needed.  rules/evdev.xml is what makes GNOME list it.
+// in /usr/share/X11/xkb/rules/evdev turns it into  pc+de(prog).  Because this
+// file is named 'de' and ~/.config/xkb comes first in the include path, that
+// lands here, so no entry in rules/evdev is needed.  rules/evdev.xml is what
+// makes GNOME list it.
 //
-// Everything not mentioned here comes from the stock German keymap, so upstream
-// fixes to symbols/de keep flowing through.  See ../../../plan.txt for the
-// design and ../../../ReadMe.md for installation.
+// Shadowing symbols/de by name is safe only because libxkbcommon keeps
+// searching the remaining include paths when the section it wants is not in the
+// first file it finds.  So plain 'de' and every stock variant (neo, nodeadkeys,
+// ...) still reach /usr/share/X11/xkb/symbols/de, and upstream fixes keep
+// flowing through into 'prog' as well.
+//
+// Never name a section here 'basic': the  include "de(basic)"  below would then
+// match itself and libxkbcommon 1.6.0 segfaults instead of reporting recursion.
+//
+// See ../../../plan.txt for the design and ../../../ReadMe.md for installation.
 
+// Hands plain 'de' back to the stock German layout: no 'basic' here, so the
+// include falls through to /usr/share/X11/xkb/symbols/de.
 default partial alphanumeric_keys
-xkb_symbols "basic" {
+xkb_symbols "passthrough" {
+    include "de(basic)"
+};
+
+partial alphanumeric_keys
+xkb_symbols "prog" {
 
     include "de(basic)"
-    name[Group1]= "German (coding)";
+    name[Group1]= "Deutsch (Programmierung)";
 
     // ---- <> becomes a second AltGr ------------------------------------
     // Deliberately no modifier_map: a modifier map is global across groups,
