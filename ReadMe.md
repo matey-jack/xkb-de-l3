@@ -8,33 +8,32 @@ Viele deutsche Software-Entwickler benutzen das Amerikanische Tastaturlayout, we
 Die Belegung im Detail:
  * Die Symbole `^` und \` werden zu Belegungen der ersten Ebene auf ihren gewöhnlichen Tasten. Wenn man sie als Akzenttaste braucht, einfach AltGr+Taste drücken!
  * Shift+3 wird zu @ und das deutsche § wandert stattdessen auf AltGr+3.
- * `'` und `#` wechseln ihre Plätze, so dass der Apostroph bzw. 'single quote' ohne Shift erreichbar ist. `#` braucht dann wie im US Layout ein Shift. Beide bleiben aber auf derselben Taste.
+ * `'` und `#` wechseln ihre Plätze, sodass der Apostroph bzw. 'single quote' ohne Shift erreichbar ist. 
+   `#` braucht dann wie im US Layout ein Shift. Beide bleiben aber auf derselben Taste.
  * (Wie man sieht, liegen die meisten geänderten Zeichen immer noch auf der Taste auf der sie auch beschriftet sind!)
  * Die Taste `<>|` wird zu AltGr.
 
 ## Basis- und Shift-Ebene
 
 ```
-^°  1!  2"  3@  4$  5%  6&  7/  8(  9)  0=  ß?  `´  Bsp
-  Tab qQ  wW  eE  rR  tT  zZ  uU  iI  oO  pP  üÜ  +*
-   Cap aA  sS  dD  fF  gG  hH  jJ  kK  lL  öÖ  äÄ  '#  Ent
- Sft AGr yY  xX  cC  vV  bB  nN  mM  ,;  .:  -_  Sft
+^°  1!  2"  3@  4$  5%  6&  7/  8(  9)  0=  ß?  `´   ⌫ ⌫
+  ⇥   qQ  wW  eE  rR  tT  zZ  uU  iI  oO  pP  üÜ  +*  ↵↵
+  ⇪⇪   aA  sS  dD  fF  gG  hH  jJ  kK  lL  öÖ  äÄ  '#  ↵
+ ⇧⇧  ⎇   yY  xX  cC  vV  bB  nN  mM  ,;  .:  -_  ⇧⇧
 ```
 
 Jede Taste ist vier Spalten breit (ein Zeichen = 1/4 Taste), daher sind die Zeilen
 genauso versetzt wie auf der physischen Tastatur. Das erste Zeichen einer Taste ist
-die Basis-, das zweite die Shift-Ebene. Gegenüber `de(basic)` anders sind nur Shift+3
-(`@` statt `§`), die getauschten Paare `` `´ `` und `'#`, und die `<>|`-Taste, die
-jetzt die zweite AltGr-Taste ist (`AGr`). Dazu sind `^` und `` ` `` hier echte
-Zeichen statt Tot-Tasten.
+die Basis-, das zweite die Shift-Ebene. Modifikatoren: `⇥` Tab, `⇪⇪` CapsLock,
+`⇧⇧` Shift, `⎇` AltGr, `↵` Enter, `⌫` Backspace.
 
 ## AltGr- und AltGr+Shift-Ebene
 
 ```
-^    ¡  #¤  §£  €¢  ‰   ^   |   [   ]   }   \¿  `   Bsp
-  Tab         ↑               \   {   }   ~
-   Cap ⇤   ←   ↓   →   ⇥       `   /   (   )   ;   ’   Ent
- Sft AGr                 ⌦   ×   =µ  <   >   –   Sft
+^    ¡  #¤  §£  €¢  ‰   |   {   [   ]   }   \¿  `  ⌫ ⌫
+  ⇥           ↑               \   {   }   ~        ↵↵
+  ⇪⇪   ⇱   ←   ↓   →   ⇲       /   (   )   ;        ↵
+ ⇧⇧  ⎇                   ⌦   ×   =µ  <   >   –   ⇧⇧
 ```
 
 Gleiche Darstellung, aber erstes Zeichen = AltGr, zweites = AltGr+Shift. Gezeigt ist
@@ -42,13 +41,14 @@ nur, was zur Programmier-Belegung gehört (einiges davon stimmt schon mit `de(ba
 überein); alle übrigen Positionen behalten ihre Standard-Belegung und sind hier der
 Übersicht halber leer gelassen.
 
- * `^` auf der `^`-Taste und `` ` `` auf der `´`-Taste sind die *Akzent*-Varianten
-   (Tot-Tasten) – die "lebenden" Zeichen liegen ja jetzt auf der Basis-Ebene.
-   AltGr+6 und AltGr+j sind dagegen echte, direkt druckende `^` bzw. `` ` ``.
- * Navigation: `⇤` Pos1, `⇥` Ende, `←` `↓` `↑` `→` Pfeile, `⌦` Entf. Diese liegen
+ * `^` auf der `^`-Taste und `` ` `` auf der `´`-Taste sind hier ausschließlich die
+   *Akzent*-Varianten (Tot-Tasten); die "lebenden" Zeichen gibt es nur einmal, auf
+   der Basis-Ebene derselben Tasten.
+ * Navigation: `⇱` Pos1, `⇲` Ende, `←` `↓` `↑` `→` Pfeile, `⌦` Entf. Diese liegen
    absichtlich auf beiden Ebenen, damit AltGr+Shift+s auch markiert.
- * Einige Zeichen sind doppelt belegt (`^`, `` ` ``, `\`, `}`, `/`, `=`, `()`, `;`),
-   damit auch alte Positionen aus dem US- und DE-Layout weiter funktionieren.
+ * Die Tasten `\`, `{` und `}` sind auf der AltGr-Ebene doppelt belegt 
+   und `/`, `(`, `)`, `;`, `=` sind doppelt hier und auf der üblichen Position der Shift-Ebene belegt,
+   damit die gewohnten Positionen aus dem deutschen Standard-Layout weiter funktionieren.
 
 ## Belegung von CapsLock und andere Optionen
 

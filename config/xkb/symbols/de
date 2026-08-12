@@ -43,18 +43,15 @@ xkb_symbols "prog" {
     // matches on the keysym alone, and LevelThree is already bound to Mod5.
     key <LSGT> { type[Group1]= "ONE_LEVEL", [ ISO_Level3_Shift ] };
 
-    // ---- number row, left half ----------------------------------------
+    // ---- number row ----------------------------------------
     // AE01 is left alone: ¹ ¡ are already where the plan wants them.
     key <TLDE> {[     asciicircum,     degree,  dead_circumflex,           U2033 ]}; // ^ ° ^ ″
     key <AE02> {[               2,   quotedbl,       numbersign,        currency ]}; // 2 " # ¤
     key <AE03> {[               3,         at,          section,        sterling ]}; // 3 @ § £
     key <AE04> {[               4,     dollar,         EuroSign,            cent ]}; // 4 $ € ¢
     key <AE05> {[               5,    percent,            U2030,    threeeighths ]}; // 5 % ‰ ⅜
-
-    // ---- number row, right half ---------------------------------------
-    // AE08 [ , AE09 ] , AE10 } and AE11 \ ¿ already match the plan.
-    key <AE06> {[               6,  ampersand,      asciicircum,     fiveeighths ]}; // 6 & ^  
-    key <AE07> {[               7,      slash,              bar,    seveneighths ]}; // 7 / |  
+    key <AE06> {[               6,  ampersand,              bar,     fiveeighths ]}; // 6 & |
+    // 7/ to ß? unchanged
     key <AE12> {[           grave, dead_acute,       dead_grave,     dead_ogonek ]}; // ´ ` `
 
     // ---- navigation block, left hand (e / a s d f g) ------------------
@@ -78,14 +75,13 @@ xkb_symbols "prog" {
     key <AD09> {[               o,          O,       braceright,          Oslash ]}; //
     key <AD10> {[               p,          P,       asciitilde,           THORN ]}; //
 
-    key <AC07> {[               j,          J,            grave,   dead_abovedot ]}; //
-    key <AC08> {[               k,          K,            slash,       ampersand ]}; //
-    key <AC09> {[               l,          L,        parenleft,         Lstroke ]}; //
-    key <AC10> {[      odiaeresis, Odiaeresis,       parenright,   dead_belowdot ]}; //
-    key <AC11> {[      adiaeresis, Adiaeresis,        semicolon,      dead_caron ]}; //
+    key <AC07> {[               j,          J,            slash,   dead_abovedot ]}; //
+    key <AC08> {[               k,          K,        parenleft,       ampersand ]}; //
+    key <AC09> {[               l,          L,       parenright,         Lstroke ]}; //
+    key <AC10> {[      odiaeresis, Odiaeresis,        semicolon,   dead_belowdot ]}; //
+    // AC11 unchanged, and the next one flips Shift and base layer compared to de(basic)
     key <BKSL> {[      apostrophe, numbersign, rightsinglequotemark,  dead_breve ]};
 
-    // AB10 - _ – — already matches the plan.
     key <AB06> {[               n,          N,         multiply,           U201D ]}; //
     key <AB07> {[               m,          M,            equal,              mu ]}; //
     key <AB08> {[           comma,  semicolon,             less,        multiply ]}; //
