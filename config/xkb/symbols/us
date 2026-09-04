@@ -1,0 +1,46 @@
+// One-key patch for the stock US International layout: AE11, the key left of
+// Backspace, gets an en dash on the third level.
+//
+// Unlike ../symbols/de this is not a variant anyone selects.  ../rules/evdev
+// appends it whenever layout=us variant=intl is active, in any group, so
+// nothing is registered in ../rules/evdev.xml and the Settings dialog is
+// unchanged: us(intl) simply behaves differently from now on.
+//
+// The section deliberately is NOT called 'intl'.  It cannot be.  The stock rule
+//     *  *  =  pc+%l%(v)
+// turns us+intl into  pc+us(intl), which finds this file first, so a section
+// named 'intl' containing  include "us(intl)"  would match itself - the
+// recursion libxkbcommon 1.6.0 segfaults on rather than reports (see
+// ../symbols/de).  With the section named 'ndash', the name 'intl' stays
+// unclaimed here, the include falls through to the stock
+// /usr/share/X11/xkb/symbols/us, and rules/evdev appends this section after it.
+// Same fall-through that lets symbols/de shadow the German layout safely, so
+// every other stock us variant (dvorak, colemak, alt-intl, ...) is untouched
+// and keeps tracking upstream.
+
+// Hands plain 'us' back to the stock layout: no section named 'basic' here, so
+// the include falls through.  This one has to exist: pc+us (layout without a
+// variant) asks for this file's *default* section, and a file whose only
+// section were 'ndash' would hand the bare us layout a single key.
+default partial alphanumeric_keys
+xkb_symbols "passthrough" {
+    include "us(basic)"
+};
+
+// 'ndash' is the HTML entity name; X11 has no keysym of that name, and an
+// unrecognised keysym compiles to NoSymbol with only a warning - which looks
+// exactly like the override silently not applying.  The en dash U+2013 is
+// 'endash' (keysymdef.h: #define XK_endash 0x0aaa); the explicit form 'U2013'
+// works too.  'emdash' (U+2014) is the longer one, if that was meant.
+//
+// The line respecifies all four levels, so it also drops the dead key that
+// stock us(intl) has on level 4:
+//     key <AE11> { [ minus, underscore, yen, dead_belowdot ] };
+// i.e. yen moves from level 3 to level 4 and dead_belowdot goes away.
+//
+// No level3() include is needed: us(intl) already pulls in
+// level3(ralt_switch), and this section is merged into that keymap.
+partial alphanumeric_keys
+xkb_symbols "ndash" {
+    key <AE11> { [     minus, underscore,  endash,  yen ] };
+};

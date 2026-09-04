@@ -26,3 +26,35 @@
 // answer to that name.  'capslock' is a symbols file only, never a layout.
 ! option = symbols
 caps:shift_modifier = +capslock(shift_modifier)
+
+// us(intl) always picks up the AE11 override in ../symbols/us(ndash).
+//
+// After the include for the same reason the option is: by the time we get
+// here the stock rule has already set symbols to  pc+us(intl), and a rule
+// value starting with '+' appends to the current value instead of replacing
+// it (+bar onto foo gives foo+bar).  Appending is also what makes the
+// override win - a later include overrides an earlier one for the keys it
+// defines - so this must come after, not before.
+//
+// One rule set per layout position, the same shape the stock symbols rules
+// have: the unindexed set matches only when a single layout is configured,
+// layout[N] matches position N when several are, and ':N' places the section
+// in that group.  The sets do not overlap, so the section is appended once.
+// libxkbcommon 1.8 would collapse all five into
+//     ! layout[any]  variant[any]  =  symbols
+//       us           intl          =  +us(ndash):%i
+// but layout[any] and %i do not exist in 1.6.
+! layout        variant         = symbols
+  us            intl            = +us(ndash)
+
+! layout[1]     variant[1]      = symbols
+  us            intl            = +us(ndash):1
+
+! layout[2]     variant[2]      = symbols
+  us            intl            = +us(ndash):2
+
+! layout[3]     variant[3]      = symbols
+  us            intl            = +us(ndash):3
+
+! layout[4]     variant[4]      = symbols
+  us            intl            = +us(ndash):4
